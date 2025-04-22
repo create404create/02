@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phone Number Lookup</title>
+    <title>Phone Number Info</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <div class="container">
-        <div class="search-box">
-            <input type="text" id="phoneInput" placeholder="Enter phone number" />
-            <button onclick="lookupNumber()">Search</button>
-        </div>
-        <div id="result" class="result-box">
-            Please enter a phone number to start.
+        <h1>Phone Number Lookup</h1>
+        <input type="text" id="phone-input" placeholder="Enter phone number" />
+        <button id="search-btn">Search</button>
+
+        <div id="phone-info">
+            <!-- Results will be displayed here -->
         </div>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
