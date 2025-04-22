@@ -1,97 +1,133 @@
-const canvas = document.getElementById('dino-game');
-const ctx = canvas.getContext('2d');
+// Dino Game Logic
+const canvas = document.getElementById("dino-game");
+const ctx = canvas.getContext("2d");
+
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-let dino = { x: 50, y: canvas.height - 60, w: 40, h: 40, vy: 0, gravity: 2, jump: -25, onGround: true };
-let obstacles = [];
-let keys = {};
+let dino = {
+  x: 50,
+  y: canvas.height - 100,
+  width: 40,
+  height: 40,
+  dy: 0,
+  gravity: 1.5,
+  jumpPower: -20,
+  grounded: true,
+};
 
-function spawnObstacle() {
-  obstacles.push({ x: canvas.width, y: canvas.height - 50, w: 30, h: 50 });
+let obstacles = [];
+let frame = 0;
+let gameSpeed = 6;
+
+document.addEventListener("keydown", function (e) {
+  if (e.code === "Space" && dino.grounded) {
+    dino.dy = dino.jumpPower;
+    dino.grounded = false;
+  }
+});
+
+function drawDino() {
+  ctx.fillStyle = "#fff";
+  ctx.fillRect(dino.x, dino.y, dino.width, dino.height);
 }
 
-function draw() {
+function drawObstacles() {
+  ctx.fillStyle = "#ff5050";
+  for (let obs of obstacles) {
+    ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+  }
+}
+
+function updateGame() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  ctx.fillStyle = '#2c3e50';
-  ctx.fillRect(dino.x, dino.y, dino.w, dino.h);
+  // Dino Physics
+  dino.y += dino.dy;
+  dino.dy += dino.gravity;
 
-  obstacles.forEach(obs => {
-    ctx.fillStyle = '#e74c3c';
-    ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
-  });
-}
+  if (dino.y >= canvas.height - 100) {
+    dino.y = canvas.height - 100;
+    dino.dy = 0;
+    dino.grounded = true;
+  }
 
-function update() {
-  if (keys[' ']) {
-    if (dino.onGround) {
-      dino.vy = dino.jump;
-      dino.onGround = false;
+  // Obstacle logic
+  if (frame % 90 === 0) {
+    obstacles.push({
+      x: canvas.width,
+      y: canvas.height - 50,
+      width: 30,
+      height: 50,
+    });
+  }
+
+  obstacles.forEach((obs, i) => {
+    obs.x -= gameSpeed;
+    if (obs.x + obs.width < 0) obstacles.splice(i, 1);
+
+    // Collision detection
+    if (
+      dino.x < obs.x + obs.width &&
+      dino.x + dino.width > obs.x &&
+      dino.y < obs.y + obs.height &&
+      dino.y + dino.height > obs.y
+    ) {
+      obstacles = [];
+      alert("Game Over! Reload to try again.");
     }
-  }
+  });
 
-  dino.y += dino.vy;
-  dino.vy += dino.gravity;
-
-  if (dino.y + dino.h >= canvas.height - 20) {
-    dino.y = canvas.height - dino.h - 20;
-    dino.vy = 0;
-    dino.onGround = true;
-  }
-
-  obstacles.forEach(obs => obs.x -= 6);
-  obstacles = obstacles.filter(obs => obs.x + obs.w > 0);
+  drawDino();
+  drawObstacles();
+  frame++;
+  requestAnimationFrame(updateGame);
 }
 
-function gameLoop() {
-  update();
-  draw();
-  requestAnimationFrame(gameLoop);
-}
+updateGame();
 
-setInterval(spawnObstacle, 1500);
-requestAnimationFrame(gameLoop);
 
-window.addEventListener('keydown', e => keys[e.key] = true);
-window.addEventListener('keyup', e => keys[e.key] = false);
-
+// Lookup Logic
 async function lookupNumber() {
-  const phone = document.getElementById('phoneInput').value;
-  if (!phone) return alert("Please enter a number.");
+  const phone = document.getElementById("phone-input").value.trim();
+  const resultDiv = document.getElementById("result");
 
-  const resultBox = document.getElementById('resultBox');
-  resultBox.classList.remove('hidden');
+  if (!phone) {
+    resultDiv.innerHTML = "Please enter a phone number.";
+    return;
+  }
+
+  resultDiv.innerHTML = "🔍 Fetching...";
 
   try {
-    const [tcpa, person] = await Promise.all([
-      fetch(`https://tcpa.api.uspeoplesearch.net/tcpa/v1?x=${phone}`).then(res => res.json()),
-      fetch(`https://person.api.uspeoplesearch.net/person/v3?x=${phone}`).then(res => res.json())
-    ]);
+    const tcpaRes = await fetch(`https://tcpa.api.uspeoplesearch.net/tcpa/v1?x=${phone}`);
+    const tcpaData = await tcpaRes.json();
 
-    const info = person.person[0];
-    document.getElementById('name').innerText = info.name || 'N/A';
-    document.getElementById('age').innerText = info.age || 'N/A';
-    document.getElementById('dob').innerText = info.dob || 'N/A';
-    document.getElementById('address').innerText = info.address || 'N/A';
-    document.getElementById('city').innerText = info.city || 'N/A';
-    document.getElementById('state').innerText = info.state || 'N/A';
+    const personRes = await fetch(`https://person.api.uspeoplesearch.net/person/v3?x=${phone}`);
+    const personData = await personRes.json();
 
-    document.getElementById('dnc_national').innerText = tcpa.dnc_national ? 'Yes' : 'No';
-    document.getElementById('dnc_state').innerText = tcpa.dnc_state ? 'Yes' : 'No';
-    document.getElementById('litigator').innerText = tcpa.litigator ? 'Yes' : 'No';
-    document.getElementById('spam').innerText = tcpa.spam ? 'Yes' : 'No';
+    let html = `<strong>📞 Phone: </strong>${phone}<br/>`;
+
+    if (tcpaData) {
+      html += `<strong>Litigator:</strong> ${tcpaData.litigator ? 'Yes' : 'No'}<br/>`;
+      html += `<strong>Blacklist:</strong> ${tcpaData.blacklist ? 'Yes' : 'No'}<br/>`;
+      html += `<strong>DNC National:</strong> ${tcpaData.dnc_national ? 'Yes' : 'No'}<br/>`;
+      html += `<strong>DNC State:</strong> ${tcpaData.dnc_state ? 'Yes' : 'No'}<br/>`;
+      html += `<strong>State:</strong> ${tcpaData.state}<br/>`;
+    }
+
+    if (personData && personData.person && personData.person.length > 0) {
+      const p = personData.person[0];
+      html += `<br/><strong>👤 Name:</strong> ${p.name}<br/>`;
+      html += `<strong>Age:</strong> ${p.age}<br/>`;
+      html += `<strong>DOB:</strong> ${p.dob}<br/>`;
+      html += `<strong>Address:</strong> ${p.address}, ${p.city}, ${p.state} ${p.zip}<br/>`;
+    }
+
+    resultDiv.innerHTML = html;
 
   } catch (err) {
-    alert("Failed to fetch data.");
+    resultDiv.innerHTML = "❌ Failed to fetch data.";
     console.error(err);
   }
-}
-
-function copyResult() {
-  const resultBox = document.getElementById('resultBox');
-  const text = resultBox.innerText;
-  navigator.clipboard.writeText(text).then(() => {
-    alert("Result copied to clipboard!");
-  });
 }
