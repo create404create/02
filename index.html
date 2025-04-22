@@ -3,23 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>USA Number Lookup - By Ehtisham</title>
+  <title>USA Number Lookup</title>
   <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/61/61112.png" />
 </head>
 <body>
+  <canvas id="dino-game"></canvas>
 
-  <!-- Dino Game Background -->
-  <div id="game-container">
-    <canvas id="dino-game"></canvas>
-  </div>
+  <div class="container">
+    <h1>Truecaller-Like Number Lookup</h1>
+    <input type="text" id="phoneInput" placeholder="Enter US Phone Number" />
+    <button onclick="lookupNumber()">Lookup</button>
+    <button onclick="copyResult()">📋 Copy</button>
+    <button onclick="exportPDF()">📄 Export</button>
+    <button onclick="toggleDarkMode()">🌙 Dark Mode</button>
 
-  <!-- Main Content -->
-  <div class="app-container">
-    <h1>📞 USA Number Lookup</h1>
-    <input type="text" id="phone-input" placeholder="Enter US Phone Number" />
-    <button onclick="lookupNumber()">Search</button>
-    <div id="result"></div>
-    <p class="footer">Created by <a href="skype:live:.cid.6a4827c093354752">Ehtisham</a></p>
+    <div id="result" class="result-box"></div>
+    <div id="recentSearches" class="recent-box"></div>
+
+    <footer>Created by <a href="skype:live:.cid.6a4827c093354752?chat">Ehtisham</a></footer>
   </div>
 
   <script src="script.js"></script>
