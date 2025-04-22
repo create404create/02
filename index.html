@@ -3,31 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>USA Number Lookup</title>
+  <title>USA Number Lookup - By Ehtisham</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <canvas id="dino-game"></canvas>
 
-  <div class="container">
+  <!-- Dino Game Background -->
+  <div id="game-container">
+    <canvas id="dino-game"></canvas>
+  </div>
+
+  <!-- Main Content -->
+  <div class="app-container">
     <h1>📞 USA Number Lookup</h1>
-    <input type="text" id="phoneInput" placeholder="Enter phone number..." />
-    <button onclick="lookupNumber()">Lookup</button>
-
-    <div id="resultBox" class="hidden">
-      <h2>🔍 Lookup Result</h2>
-      <p><strong>Name:</strong> <span id="name"></span></p>
-      <p><strong>Age:</strong> <span id="age"></span></p>
-      <p><strong>Date of Birth:</strong> <span id="dob"></span></p>
-      <p><strong>Address:</strong> <span id="address"></span></p>
-      <p><strong>City:</strong> <span id="city"></span></p>
-      <p><strong>State:</strong> <span id="state"></span></p>
-      <p><strong>DNC National:</strong> <span id="dnc_national"></span></p>
-      <p><strong>DNC State:</strong> <span id="dnc_state"></span></p>
-      <p><strong>Litigator:</strong> <span id="litigator"></span></p>
-      <p><strong>Spam:</strong> <span id="spam"></span></p>
-      <button onclick="copyResult()">📋 Copy Result</button>
-    </div>
+    <input type="text" id="phone-input" placeholder="Enter US Phone Number" />
+    <button onclick="lookupNumber()">Search</button>
+    <div id="result"></div>
+    <p class="footer">Created by <a href="skype:live:.cid.6a4827c093354752">Ehtisham</a></p>
   </div>
 
   <script src="script.js"></script>
