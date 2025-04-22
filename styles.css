@@ -1,0 +1,55 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: transparent;
+  overflow: hidden;
+}
+
+canvas#dino-game {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  background-color: #f0f0f0;
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  padding: 2rem;
+  max-width: 600px;
+  margin: auto;
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  margin-top: 50px;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 18px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-bottom: 1rem;
+}
+
+button {
+  padding: 10px 15px;
+  font-size: 16px;
+  border: none;
+  background-color: #3498db;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+button:hover {
+  background-color: #2980b9;
+}
+
+.hidden {
+  display: none;
+}
