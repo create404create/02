@@ -1,29 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>USA Number Lookup</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/61/61112.png" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phone Number Lookup</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-  <canvas id="dino-game"></canvas>
-
-  <div class="container">
-    <h1>Truecaller-Like Number Lookup</h1>
-    <input type="text" id="phoneInput" placeholder="Enter US Phone Number" />
-    <button onclick="lookupNumber()">Lookup</button>
-    <button onclick="copyResult()">📋 Copy</button>
-    <button onclick="exportPDF()">📄 Export</button>
-    <button onclick="toggleDarkMode()">🌙 Dark Mode</button>
-
-    <div id="result" class="result-box"></div>
-    <div id="recentSearches" class="recent-box"></div>
-
-    <footer>Created by <a href="skype:live:.cid.6a4827c093354752?chat">Ehtisham</a></footer>
-  </div>
-
-  <script src="script.js"></script>
+    <div class="container">
+        <div class="search-box">
+            <input type="text" id="phoneInput" placeholder="Enter phone number" />
+            <button onclick="lookupNumber()">Search</button>
+        </div>
+        <div id="result" class="result-box">
+            Please enter a phone number to start.
+        </div>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
